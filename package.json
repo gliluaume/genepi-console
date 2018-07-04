@@ -16,18 +16,19 @@
   "author": "gs",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^5.0.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
     "execa": "^0.10.0",
-    "genepi": "^0.1.0",
     "jest": "^23.2.0"
   },
   "dependencies": {
     "ansi-escapes": "^3.1.0",
     "chalk": "^2.4.1",
+    "genepi": "^0.2.0",
     "got": "^8.3.1",
     "meow": "^5.0.0"
   },
@@ -36,8 +37,8 @@
     "coverageThreshold": {
       "global": {
         "branches": 50,
-        "functions": 100,
-        "lines": 90,
+        "functions": 0,
+        "lines": 20,
         "statements": 2
       }
     }

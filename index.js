@@ -3,8 +3,8 @@
 
 const meow = require('meow')
 const { genepi } = require('genepi')
-const { ConsoleOutputter } = require('./console-outputter')
-const { pipeSource } = require('./detect-source')
+const { ConsoleOutputter } = require('./lib/console-outputter')
+const { pipeSource } = require('./lib/detect-source')
 
 const cli = meow(`
   Usage
