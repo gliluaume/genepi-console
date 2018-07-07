@@ -1,4 +1,4 @@
-# Genepi Console
+# Genepi Console [![Build Status](https://travis-ci.org/gliluaume/genepi-console.svg?branch=master)](https://travis-ci.org/gliluaume/genepi-console)
 Fast reading tool in console
 
 <p align="center">
