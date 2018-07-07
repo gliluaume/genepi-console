@@ -2,10 +2,18 @@
   "name": "genepi-console",
   "version": "0.1.0",
   "description": "Fast reading in console",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gliluaume/genepi-console"
+  },
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
+  "files": [
+    "index.js",
+    "lib/**/*"
+  ],
   "scripts": {
     "test": "eslint *.js tests && jest tests/*"
   },
