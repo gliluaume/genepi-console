@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "eslint *.js tests && jest tests"
+    "test": "eslint *.js tests && jest tests/*"
   },
   "keywords": [
     "fast-reading",
@@ -23,23 +23,27 @@
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
     "execa": "^0.10.0",
-    "jest": "^23.2.0"
+    "jest": "^23.3.0"
   },
   "dependencies": {
     "ansi-escapes": "^3.1.0",
     "chalk": "^2.4.1",
-    "genepi": "^0.2.0",
-    "got": "^8.3.1",
+    "genepi": "^1.0.0",
+    "got": "^8.3.2",
     "meow": "^5.0.0"
   },
   "jest": {
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {
-        "branches": 50,
-        "functions": 0,
-        "lines": 20,
+        "branches": 100,
+        "functions": 100,
+        "lines": 0,
         "statements": 2
+      },
+      "lib/detect-source.js": {
+        "branches": 25,
+        "functions": 25
       }
     }
   }
