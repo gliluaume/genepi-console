@@ -40,10 +40,6 @@
         "functions": 100,
         "lines": 0,
         "statements": 2
-      },
-      "lib/detect-source.js": {
-        "branches": 25,
-        "functions": 25
       }
     }
   }
