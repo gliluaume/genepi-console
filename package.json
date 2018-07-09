@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/gliluaume/genepi-console"
   },
+  "bin": {
+    "genepi-cli": "./index.js"
+  },
   "main": "index.js",
   "directories": {
     "test": "tests"

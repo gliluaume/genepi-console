@@ -8,7 +8,7 @@ const { pipeSource } = require('./lib/pipe-source')
 
 const cli = meow(`
   Usage
-    $ genepi <string|textfile|stdin|url> [-d|--delay <delay>]
+    $ genepi-cli <string|textfile|stdin|url> [-d|--delay <delay>]
 `, {
   flags: {
     delay: {
