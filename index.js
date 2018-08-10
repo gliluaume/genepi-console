@@ -3,7 +3,7 @@
 
 const meow = require('meow')
 const readline = require('readline')
-const { genepi, GenepiReader } = require('genepi')
+const { GenepiReader } = require('genepi')
 const { ConsoleOutputter } = require('./lib/console-outputter')
 const { pipeSource } = require('./lib/pipe-source')
 
@@ -64,7 +64,7 @@ function genepize(text) {
   const genepiReader = new GenepiReader()
   const outputter = new ConsoleOutputter()
   configureKeys(process.stdin, genepiReader, text, outputter)
-  return genepiReader.play(text, outputter, 250)
+  return genepiReader.play(text, outputter, cli.flags.delay)
 }
 
 pipeSource().then(genepize)
