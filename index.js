@@ -19,7 +19,7 @@ const cli = meow(`
   }
 })
 
-// TODO change genepi API:
+// TODO update genepi version:
 //  * I do not want to set text and outputter on each call!!!
 //  * expose paused status: I do not have to access internal promise
 //  * play should have current delay if delay is not provided
@@ -29,11 +29,13 @@ function buildkeyMap(genepiReader, text, outputter) {
     'up': function up() {
       const position = genepiReader.pause()
       const delay = Math.max(50, genepiReader._delay - 10) // TODO use delay in new version
+      outputter.lineHeader = delay
       genepiReader.play(text, outputter, delay, position)
     },
     'down': function down() {
       const position = genepiReader.pause()
       const delay = Math.min(750, genepiReader._delay + 10) // TODO use delay in new version
+      outputter.lineHeader = delay
       genepiReader.play(text, outputter, delay, position)
     },
     'space': function pause() {
@@ -63,8 +65,11 @@ function configureKeys(readableStream, genepiReader, text, outputter) {
 function genepize(text) {
   const genepiReader = new GenepiReader()
   const outputter = new ConsoleOutputter()
+  outputter.lineHeader = cli.flags.delay
   configureKeys(process.stdin, genepiReader, text, outputter)
   return genepiReader.play(text, outputter, cli.flags.delay)
 }
-
-pipeSource().then(genepize)
+process.stdout.write('\n')
+pipeSource()
+  .then(genepize)
+  .then(() => process.exit(0)) // why?
