@@ -15,6 +15,16 @@ describe('consoleOutputter', () => {
     expect(outputter.footer).toBeInstanceOf(Function)
   })
 
+  describe('lineHeader setter', () => {
+    it('transforms integer into a padded string', () => {
+      const outputter = new ConsoleOutputter()
+      outputter.lineHeader = 1
+      expect(outputter.lineHeader).toBe('  1')
+      outputter.lineHeader = 42
+      expect(outputter.lineHeader).toBe(' 42')
+    })
+  })
+
   describe('header', () => {
     it('does not write anything', () => {
       const spyWrite = jest.spyOn(process.stdout, 'write')
