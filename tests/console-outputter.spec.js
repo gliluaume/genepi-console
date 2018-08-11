@@ -25,6 +25,19 @@ describe('consoleOutputter', () => {
     })
   })
 
+  describe('writeProgress', () => {
+    it('simple format', () => {
+      const spyWrite = jest.spyOn(process.stdout, 'write')
+      const outputter = new ConsoleOutputter()
+      outputter.writeProgress(2, 3)
+      try {
+        expect(spyWrite).toBeCalledWith(cursorLeft + eraseEndLine + 'progress: 2 / 3')
+      } finally {
+        spyWrite.mockReset()
+      }
+    })
+  })
+
   describe('header', () => {
     it('does not write anything', () => {
       const spyWrite = jest.spyOn(process.stdout, 'write')

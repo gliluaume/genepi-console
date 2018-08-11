@@ -9,3 +9,9 @@ Fast reading tool in console
 ```shell
   $ genepi-cli <string|textfile|stdin|url> [-d|--delay <delay>]
 ```
+
+## Debug tips
+```
+console.log(process._getActiveHandles().length)
+console.log(process._getActiveRequests().length)
+```

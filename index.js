@@ -27,9 +27,9 @@ const cli = meow(`
 function buildkeyMap(genepiReader, text, outputter) {
   return {
     'up': function up() {
-      const position = genepiReader.pause()
-      const delay = Math.max(50, genepiReader._delay - 10) // TODO use delay in new version
+      const delay = Math.max(10, genepiReader._delay - 10) // TODO use delay in new version
       outputter.lineHeader = delay
+      const position = genepiReader.pause()
       genepiReader.play(text, outputter, delay, position)
     },
     'down': function down() {
@@ -41,8 +41,9 @@ function buildkeyMap(genepiReader, text, outputter) {
     'space': function pause() {
       if (genepiReader._prom.isCancelled()) {
         genepiReader.resume(text, outputter)
-      } else {
+      } else if (!genepiReader._prom.isFulfilled()) {
         genepiReader.pause()
+        outputter.writeProgress(genepiReader.position, genepiReader.length)
       }
     }
   }
@@ -69,7 +70,10 @@ function genepize(text) {
   configureKeys(process.stdin, genepiReader, text, outputter)
   return genepiReader.play(text, outputter, cli.flags.delay)
 }
+
 process.stdout.write('\n')
+// changing speed let bash stucked at the end of playing
+// using pipe source or a string both let this problem occurs
 pipeSource()
   .then(genepize)
   .then(() => process.exit(0)) // why?
