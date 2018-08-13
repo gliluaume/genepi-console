@@ -3,7 +3,7 @@
 
 const meow = require('meow')
 const readline = require('readline')
-const { GenepiReader } = require('genepi')
+const { GenepiReaderEE } = require('genepi')
 const { ConsoleOutputter } = require('./lib/console-outputter')
 const { pipeSource } = require('./lib/pipe-source')
 
@@ -19,29 +19,22 @@ const cli = meow(`
   }
 })
 
-// TODO update genepi version:
-//  * I do not want to set text and outputter on each call!!!
-//  * expose paused status: I do not have to access internal promise
-//  * play should have current delay if delay is not provided
-// this function is a wrapper around API because it sucks
-function buildkeyMap(genepiReader, text, outputter) {
+function mapKeys(genepiReader, text, outputter) {
   return {
     'up': function up() {
       const delay = Math.max(10, genepiReader._delay - 10) // TODO use delay in new version
       outputter.lineHeader = delay
-      const position = genepiReader.pause()
-      genepiReader.play(text, outputter, delay, position)
+      genepiReader.changeDelay(delay)
     },
     'down': function down() {
-      const position = genepiReader.pause()
       const delay = Math.min(750, genepiReader._delay + 10) // TODO use delay in new version
       outputter.lineHeader = delay
-      genepiReader.play(text, outputter, delay, position)
+      genepiReader.changeDelay(delay)
     },
     'space': function pause() {
-      if (genepiReader._prom.isCancelled()) {
-        genepiReader.resume(text, outputter)
-      } else if (!genepiReader._prom.isFulfilled()) {
+      if (genepiReader.status === 'paused') {
+        genepiReader.read()
+      } else if (genepiReader.status !== 'end') {
         genepiReader.pause()
         outputter.writeProgress(genepiReader.position, genepiReader.length)
       }
@@ -49,11 +42,11 @@ function buildkeyMap(genepiReader, text, outputter) {
   }
 }
 
-function configureKeys(readableStream, genepiReader, text, outputter) {
-  const keyMap = buildkeyMap(genepiReader, text, outputter)
+function configureKeys(genepiReader, text, outputter) {
+  const keyMap = mapKeys(genepiReader, text, outputter)
   readline.emitKeypressEvents(process.stdin)
-  readableStream.setRawMode(true)
-  readableStream.on('keypress', (str, key) => {
+  process.stdin.setRawMode(true)
+  process.stdin.on('keypress', (str, key) => {
     if (key.ctrl && key.name === 'c') {
       process.stdout.write('\n')
       process.exit(130)
@@ -64,16 +57,21 @@ function configureKeys(readableStream, genepiReader, text, outputter) {
 }
 
 function genepize(text) {
-  const genepiReader = new GenepiReader()
   const outputter = new ConsoleOutputter()
   outputter.lineHeader = cli.flags.delay
-  configureKeys(process.stdin, genepiReader, text, outputter)
-  return genepiReader.play(text, outputter, cli.flags.delay)
+
+  const genepiReader = new GenepiReaderEE(text, outputter)
+  genepiReader.on('statusChange', (data) => {
+    if (data === 'end') {
+      process.exit(0)
+    }
+  })
+
+  configureKeys(genepiReader, text, outputter)
+  return genepiReader.read(cli.flags.delay)
 }
 
 process.stdout.write('\n')
-// changing speed let bash stucked at the end of playing
-// using pipe source or a string both let this problem occurs
+
 pipeSource()
   .then(genepize)
-  .then(() => process.exit(0)) // why?
