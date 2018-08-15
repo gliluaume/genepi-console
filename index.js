@@ -14,7 +14,13 @@ const cli = meow(`
   flags: {
     delay: {
       type: 'integer',
+      default: 300,
       alias: 'd'
+    },
+    position: {
+      type: 'integer',
+      default: 0,
+      alias: 'p'
     }
   }
 })
@@ -30,6 +36,16 @@ function mapKeys(genepiReader, text, outputter) {
       const delay = Math.min(750, genepiReader._delay + 10) // TODO use delay in new version
       outputter.lineHeader = delay
       genepiReader.changeDelay(delay)
+    },
+    'left': function left() {
+      outputter.lineHeader = -1
+      genepiReader.pause()
+      genepiReader.read(genepiReader.delay, genepiReader.position, true)
+    },
+    'right': function right() {
+      outputter.lineHeader = 1
+      genepiReader.pause()
+      genepiReader.read(genepiReader.delay, genepiReader.position, false)
     },
     'space': function pause() {
       if (genepiReader.status === 'paused') {
@@ -68,7 +84,7 @@ function genepize(text) {
   })
 
   configureKeys(genepiReader, text, outputter)
-  return genepiReader.read(cli.flags.delay)
+  return genepiReader.read(cli.flags.delay, cli.flags.position)
 }
 
 process.stdout.write('\n')
