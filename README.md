@@ -9,3 +9,18 @@ Fast reading tool in console
 ```shell
   $ genepi-cli <string|textfile|stdin|url> [-d|--delay <delay>]
 ```
+
+## Debug tips
+```
+console.log(process._getActiveHandles().length)
+console.log(process._getActiveRequests().length)
+```
+## Console tips
+Customize prompt:
+```bash
+PS1="♢ "
+```
+Customize window title:
+```bash
+PROMPT_COMMAND='echo -ne "\033]0;Genepi Console Demo\007"'
+```
