@@ -7,7 +7,7 @@ Fast reading tool in console
 
 ## Usage
 ```shell
-  $ genepi-cli <string|textfile|stdin|url> [-d|--delay <delay>]
+  $ genepi-cli <string|textfile|stdin|url> [-d|--delay <delay>] [-p|--position <position>]
 ```
 
 ## Debug tips
