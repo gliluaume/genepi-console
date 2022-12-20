@@ -1,60 +1,64 @@
 #!/usr/bin/env node
 'use strict'
 
-const meow = require('meow')
-const readline = require('readline')
-const { GenepiReaderEE } = require('genepi')
-const { ConsoleOutputter } = require('./lib/console-outputter')
-const { pipeSource } = require('./lib/pipe-source')
+import meow from 'meow'
+import readline from 'readline'
+import { GenepiReaderEE } from 'genepi'
+import { ConsoleOutputter } from './lib/console-outputter.js'
+import { pipeSource } from './lib/pipe-source.js'
 
-const cli = meow(`
+const cli = meow(
+  `
   Usage
     $ genepi-cli <string|textfile|stdin|url> [-d|--delay <delay>]
-`, {
-  flags: {
-    delay: {
-      type: 'integer',
-      default: 300,
-      alias: 'd'
+`,
+  {
+    importMeta: import.meta,
+    flags: {
+      delay: {
+        type: 'number',
+        default: 300,
+        alias: 'd',
+      },
+      position: {
+        type: 'number',
+        default: 0,
+        alias: 'p',
+      },
     },
-    position: {
-      type: 'integer',
-      default: 0,
-      alias: 'p'
-    }
   }
-})
+)
 
 function mapKeys(genepiReader, text, outputter) {
   return {
-    'up': function up() {
+    up: function up() {
       const delay = Math.max(10, genepiReader._delay - 10) // TODO use delay in new version
       outputter.lineHeader = delay
       genepiReader.changeDelay(delay)
     },
-    'down': function down() {
+    down: function down() {
       const delay = Math.min(750, genepiReader._delay + 10) // TODO use delay in new version
       outputter.lineHeader = delay
       genepiReader.changeDelay(delay)
     },
-    'left': function left() {
+    left: function left() {
       outputter.lineHeader = -1
       genepiReader.pause()
       genepiReader.read(genepiReader.delay, genepiReader.position, true)
     },
-    'right': function right() {
+    right: function right() {
       outputter.lineHeader = 1
       genepiReader.pause()
       genepiReader.read(genepiReader.delay, genepiReader.position, false)
     },
-    'space': function pause() {
+    space: function pause() {
       if (genepiReader.status === 'paused') {
         genepiReader.read()
       } else if (genepiReader.status !== 'end') {
         genepiReader.pause()
         outputter.writeProgress(genepiReader.position, genepiReader.length)
       }
-    }
+    },
   }
 }
 
@@ -89,5 +93,4 @@ function genepize(text) {
 
 process.stdout.write('\n')
 
-pipeSource()
-  .then(genepize)
+pipeSource().then(genepize)

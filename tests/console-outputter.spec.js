@@ -1,14 +1,15 @@
 'use strict'
 
-const { ConsoleOutputter } = require('../lib/console-outputter')
+import { ConsoleOutputter } from '../lib/console-outputter.js'
 
 // console shortcuts
 const ESC = '\u001B['
 const cursorLeft = ESC + 'G'
 const eraseEndLine = ESC + 'K'
+const jest = import.meta.jest
 
 describe('consoleOutputter', () => {
-  it('has required functions', async function() {
+  it('has required functions', async function () {
     const outputter = new ConsoleOutputter()
     expect(outputter.header).toBeInstanceOf(Function)
     expect(outputter.inner).toBeInstanceOf(Function)
@@ -31,7 +32,9 @@ describe('consoleOutputter', () => {
       const outputter = new ConsoleOutputter()
       outputter.writeProgress(2, 3)
       try {
-        expect(spyWrite).toBeCalledWith(cursorLeft + eraseEndLine + 'progress: 2 / 3')
+        expect(spyWrite).toBeCalledWith(
+          cursorLeft + eraseEndLine + 'progress: 2 / 3'
+        )
       } finally {
         spyWrite.mockReset()
       }
