@@ -1,12 +1,13 @@
 'use strict'
 
-const path = require('path')
-const execa = require('execa')
+import path from 'path'
+import { execa } from 'execa'
+import { getDirname } from './dirname'
+import { detectSource, SUPPORTED_SOURCES } from '../lib/detect-source.js'
 const sampleUrl =
   'https://raw.githubusercontent.com/gliluaume/genepi-console/master/tests/text.txt'
-const samplePath = path.join(__dirname, './text.txt')
-
-const { detectSource, SUPPORTED_SOURCES } = require('../lib/detect-source')
+const dir = getDirname(import.meta.url)
+const samplePath = path.join(dir, './text.txt')
 
 describe('detectSource from args', () => {
   it('can guess stdin source', () => {
@@ -26,7 +27,7 @@ describe('detectSource from args', () => {
 })
 
 describe('pipeSource (WARN this resembles a functionnal test)', () => {
-  const fixturePath = path.join(__dirname, './fixture-detect-source.js')
+  const fixturePath = path.join(dir, './fixture-detect-source.js')
   const expected = 'This is a text.'
 
   it('can guess that a filename is given', async function () {

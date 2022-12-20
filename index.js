@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 'use strict'
 
-const meow = require('meow')
-const readline = require('readline')
-const { GenepiReaderEE } = require('genepi')
-const { ConsoleOutputter } = require('./lib/console-outputter')
-const { pipeSource } = require('./lib/pipe-source')
+import meow from 'meow'
+import readline from 'readline'
+import { GenepiReaderEE } from 'genepi'
+import { ConsoleOutputter } from './lib/console-outputter.js'
+import { pipeSource } from './lib/pipe-source.js'
 
 const cli = meow(
   `
@@ -13,14 +13,15 @@ const cli = meow(
     $ genepi-cli <string|textfile|stdin|url> [-d|--delay <delay>]
 `,
   {
+    importMeta: import.meta,
     flags: {
       delay: {
-        type: 'integer',
+        type: 'number',
         default: 300,
         alias: 'd',
       },
       position: {
-        type: 'integer',
+        type: 'number',
         default: 0,
         alias: 'p',
       },

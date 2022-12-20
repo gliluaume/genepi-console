@@ -1,11 +1,12 @@
 'use strict'
 
-const { ConsoleOutputter } = require('../lib/console-outputter')
+import { ConsoleOutputter } from '../lib/console-outputter.js'
 
 // console shortcuts
 const ESC = '\u001B['
 const cursorLeft = ESC + 'G'
 const eraseEndLine = ESC + 'K'
+const jest = import.meta.jest
 
 describe('consoleOutputter', () => {
   it('has required functions', async function () {

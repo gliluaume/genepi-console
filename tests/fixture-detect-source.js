@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict'
 
-const { pipeSource } = require('../lib/pipe-source')
+import { pipeSource } from '../lib/pipe-source.js'
 
 pipeSource().then(console.log)
