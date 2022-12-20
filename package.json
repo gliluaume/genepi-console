@@ -18,7 +18,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "test": "eslint *.js tests && jest --detectOpenHandles tests/*"
+    "test": "prettier --check . && eslint *.js tests && jest --detectOpenHandles tests/*"
   },
   "keywords": [
     "fast-reading",
@@ -34,7 +34,8 @@
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
     "execa": "^0.10.0",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "prettier": "^2.8.1"
   },
   "dependencies": {
     "ansi-escapes": "^3.1.0",
